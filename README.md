@@ -2,7 +2,7 @@
 
 ## Demo Link (Deployed with Netlify)
 
-(<https://bcr-dev.netlify.app/>)
+
 
 ## Getting Started
 
