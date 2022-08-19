@@ -1,0 +1,5 @@
+.logo {
+  @apply bg-dark-blue-04;
+  width: 100px;
+  height: 34px;
+}

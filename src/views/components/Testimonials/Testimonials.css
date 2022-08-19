@@ -1,0 +1,17 @@
+
+.slider {
+    width: 100%;
+}
+
+.slick-slide {
+    opacity: 0.6;
+    width: '100%' !important;
+    height: 100% !important;
+}
+
+.slick-center {
+    border-radius: 8px !important;
+    max-width: '100%' !important;
+    max-height: '100%' !important;
+    opacity: 1;
+}
