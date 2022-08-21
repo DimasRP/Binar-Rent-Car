@@ -23,7 +23,7 @@ const Routers = () => {
       <Route path="/dashboard" element={<Dashboard />}></Route>
       <Route path="/mobil/baru" element={<NewCar />}></Route>
       <Route path="/mobil/edit/:id" element={<EditCar />}></Route>
-      <Route path="/daftar-mobil" element={<CarList />}></Route>
+      <Route path="/daftar-mobil" element={<CarList />}></Route>  
 
       <Route path="/error/500" element={<Page500 />}></Route>
       <Route path="*" element={<Page404 />}></Route>

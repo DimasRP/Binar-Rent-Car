@@ -171,12 +171,14 @@ const CarCardDetails = () => {
               <FiUsers /> {data?.category || "-"}
             </p>
           </div>
+          Test
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-bold">Total</h2>
             <p className="text-sm font-bold">
               {currencyFormat(data?.price || 0)}
             </p>
           </div>
+
           <Link to="/cari-mobil">
             <Button fullWidth color="primary">Kembali ke Pencarian Mobil</Button>
           </Link>
