@@ -1,22 +1,30 @@
+import { ScrollToTop } from "helpers/utils";
 import {
   CarRent,
   Faq,
   Footer,
-  Header, OurServices, Testimonials,
-  WhyUs
+  Header,
+  Navbar,
+  OurServices,
+  Testimonials,
+  WhyUs,
 } from "views/components";
 
 const Home = () => {
   return (
-    <main>
-      <Header />
-      <OurServices />
-      <WhyUs />
-      <Testimonials />
-      <CarRent />
-      <Faq />
-      <Footer />
-    </main>
+    <>
+      <ScrollToTop />
+      <Navbar />
+      <main>
+        <Header />
+        <OurServices />
+        <WhyUs />
+        <Testimonials />
+        <CarRent />
+        <Faq />
+        <Footer />
+      </main>
+    </>
   );
 };
 
