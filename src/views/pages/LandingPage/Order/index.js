@@ -1,9 +1,15 @@
-import React from 'react'
+import { ScrollToTop } from "helpers/utils";
+import React from "react";
+import { Navbar } from "views/components";
 
 const Order = () => {
   return (
-    <div>Order</div>
-  )
-}
+    <>
+      <ScrollToTop />
+      <Navbar />
+      <div>Order</div>
+    </>
+  );
+};
 
-export default Order
+export default Order;

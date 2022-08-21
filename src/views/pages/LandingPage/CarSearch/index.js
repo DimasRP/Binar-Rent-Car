@@ -1,11 +1,13 @@
 import CarsContext from "context/cars/CarsContext";
+import { ScrollToTop } from "helpers/utils";
 import { useContext, useEffect } from "react";
 import {
   CarList,
   CarSearchHeader,
   CarSearchModal,
   Footer,
-  Header
+  Header,
+  Navbar,
 } from "views/components";
 
 const CarSearch = () => {
@@ -17,12 +19,16 @@ const CarSearch = () => {
   }, []);
 
   return (
-    <main>
-      {showResults ? <CarSearchHeader /> : <Header />}
-      <CarSearchModal />
-      <CarList />
-      <Footer />
-    </main>
+    <>
+      <ScrollToTop />
+      <Navbar />
+      <main>
+        {showResults ? <CarSearchHeader /> : <Header />}
+        <CarSearchModal />
+        <CarList />
+        <Footer />
+      </main>
+    </>
   );
 };
 
