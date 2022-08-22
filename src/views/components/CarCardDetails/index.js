@@ -1,9 +1,17 @@
 import CarsContext from "context/cars/CarsContext";
 import { currencyFormat } from "helpers/utils";
-import { useContext } from "react";
+import { useContext,useState } from "react";
 import { FiUsers } from "react-icons/fi";
+import {MdOutlineDateRange} from "react-icons/md"
 import { Link, useParams } from "react-router-dom";
 import Button from "../Button";
+import './carDetail.css';
+
+//date range
+import { DateRange } from "react-date-range";
+import { format } from "date-fns"
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 
 const includesData = [
   "Apa saja yang termasuk dalam paket misal durasi max 12 jam",
@@ -32,8 +40,25 @@ const othersData = [
 
 const CarCardDetails = () => {
   const { loading, carDetails: data, isNotFound } = useContext(CarsContext);
-
   const { id: carId } = useParams();
+
+  //date range
+  const [openDate, setOpenDate] = useState(false)
+  const [date, setDate] = useState([
+      {
+          startDate: new Date(),
+          endDate: new Date(),
+          key: 'selection'
+      }
+  ]);
+
+  const hitungHari = () => {
+    const startDate = date[0].startDate.getDate()
+    const endDate = date[0].endDate.getDate()
+    return endDate - startDate
+  }
+  const total = hitungHari()
+  console.log(total);
 
   if (loading) {
     return (
@@ -171,17 +196,45 @@ const CarCardDetails = () => {
               <FiUsers /> {data?.category || "-"}
             </p>
           </div>
-          Test
+          
+          <div >
+            <p className="flex items-center text-sm gap-2 text-neutral-03 ">Tentukan lama sewa mobil (max. 7 hari)</p>
+            <div className="mt-1 border border-green-400 rounded-sm flex justify-between">
+              <span onClick={()=>setOpenDate(!openDate)} className="p-2 text-gray-500 text-sm">{`${format(date[0].startDate, "dd MMM yyyy")} - ${format(date[0].endDate, "dd MMM yyyy")}`}</span>
+
+              <span className="text-xl text-gray-500 p-2 "><MdOutlineDateRange/></span>  
+            </div>
+            <div className="mt-1 border shadow-md w-full align-center">         
+              { openDate && <DateRange
+                // editableDateInputs={true}
+                onChange={(item) => setDate([item.selection])}
+                moveRangeOnFirstSelection={false}
+                ranges={date} 
+                className="date w-full"
+                minDate={new Date()}
+                maxDate={new Date(Date.now() + 6 * 24 * 60 * 60 * 1000)}
+                />      
+              }
+              {openDate &&
+                <div className="m-3">
+                  <Button fullWidth color="accent" onClick={()=>setOpenDate(!openDate)}>Pilih Tanggal</Button>
+                </div>
+              }
+
+            </div>
+          </div>
+
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-bold">Total</h2>
             <p className="text-sm font-bold">
-              {currencyFormat(data?.price || 0)}
+              {currencyFormat(data?.price * total || 0)}
             </p>
           </div>
-
-          <Link to="/cari-mobil">
-            <Button fullWidth color="primary">Kembali ke Pencarian Mobil</Button>
+          {data?.price * total !== 0 &&
+          <Link to="/order">
+            <Button fullWidth color="primary">Lanjutkan Pembayaran</Button>
           </Link>
+          }
         </div>
       </div>
     </section>
