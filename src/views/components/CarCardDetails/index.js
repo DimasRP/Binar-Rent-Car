@@ -6,6 +6,7 @@ import {MdOutlineDateRange} from "react-icons/md"
 import { Link, useParams } from "react-router-dom";
 import Button from "../Button";
 import './carDetail.css';
+import moment from 'moment'
 
 //date range
 import { DateRange } from "react-date-range";
@@ -52,13 +53,14 @@ const CarCardDetails = () => {
       }
   ]);
 
-  const hitungHari = () => {
-    const startDate = date[0].startDate.getDate()
-    const endDate = date[0].endDate.getDate()
-    return endDate - startDate
+  const getDay = () => {
+    const startDate = moment(date[0].startDate) 
+    const endDate = moment(date[0].endDate)
+    const result = endDate.diff(startDate, 'days')
+    return result
   }
-  const total = hitungHari()
-  console.log(total);
+  const sumDay = getDay()
+  console.log(sumDay);
 
   if (loading) {
     return (
@@ -200,8 +202,10 @@ const CarCardDetails = () => {
           <div >
             <p className="flex items-center text-sm gap-2 text-neutral-03 ">Tentukan lama sewa mobil (max. 7 hari)</p>
             <div className="mt-1 border border-green-400 rounded-sm flex justify-between">
-              <span onClick={()=>setOpenDate(!openDate)} className="p-2 text-gray-500 text-sm">{`${format(date[0].startDate, "dd MMM yyyy")} - ${format(date[0].endDate, "dd MMM yyyy")}`}</span>
-
+              {!openDate ?
+              <span onClick={()=>setOpenDate(!openDate)} className="p-2 text-gray-500 text-sm">{`${format(date[0].startDate, "dd MMM yyyy")} - ${format(date[0].endDate, "dd MMM yyyy")}`}</span> 
+               : <span onClick={()=>setOpenDate(!openDate)} className="p-2 text-gray-500 text-sm">pilih tanggal mulai dan akhir sewa</span>
+              }
               <span className="text-xl text-gray-500 p-2 "><MdOutlineDateRange/></span>  
             </div>
             <div className="mt-1 border shadow-md w-full align-center">         
@@ -212,7 +216,7 @@ const CarCardDetails = () => {
                 ranges={date} 
                 className="date w-full"
                 minDate={new Date()}
-                maxDate={new Date(Date.now() + 6 * 24 * 60 * 60 * 1000)}
+                maxDate={new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)}
                 />      
               }
               {openDate &&
@@ -227,10 +231,10 @@ const CarCardDetails = () => {
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-bold">Total</h2>
             <p className="text-sm font-bold">
-              {currencyFormat(data?.price * total || 0)}
+              {currencyFormat(data?.price * sumDay || 0)}
             </p>
           </div>
-          {data?.price * total !== 0 &&
+          {data?.price * sumDay !== 0 &&
           <Link to="/order">
             <Button fullWidth color="primary">Lanjutkan Pembayaran</Button>
           </Link>
