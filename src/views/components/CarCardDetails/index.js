@@ -3,7 +3,7 @@ import { currencyFormat } from "helpers/utils";
 import { useContext,useState } from "react";
 import { FiUsers } from "react-icons/fi";
 import {MdOutlineDateRange} from "react-icons/md"
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Button from "../Button";
 import './carDetail.css';
 import moment from 'moment'
@@ -13,6 +13,7 @@ import { DateRange } from "react-date-range";
 import { format } from "date-fns"
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
+import axios from "axios";
 
 const includesData = [
   "Apa saja yang termasuk dalam paket misal durasi max 12 jam",
@@ -42,6 +43,9 @@ const othersData = [
 const CarCardDetails = () => {
   const { loading, carDetails: data, isNotFound } = useContext(CarsContext);
   const { id: carId } = useParams();
+  const navigate = useNavigate()
+  const [result, setResult] = useState();
+
 
   //date range
   const [openDate, setOpenDate] = useState(false)
@@ -61,6 +65,30 @@ const CarCardDetails = () => {
   }
   const sumDay = getDay()
   console.log(sumDay);
+
+  console.log(result);
+  // button pembayaran
+  const handlePembayaran = (e) => {
+    e.preventDefault()
+    const payload = {
+      "start_rent_at": moment(date[0].startDate).format("YYYY-MM-DD"),
+      "finish_rent_at": moment(date[0].endDate).format("YYYY-MM-DD"),
+      "car_id": carId
+    }
+
+    axios
+    .post("https://bootcamp-rent-car.herokuapp.com/customer/order", payload)
+    .then((res) => {
+      setResult(res.data)
+      navigate('/order')
+    })
+    .catch((err) => {
+      console.log("pembayaran error", err);
+    })
+
+  }
+
+
 
   if (loading) {
     return (
@@ -235,9 +263,7 @@ const CarCardDetails = () => {
             </p>
           </div>
           {data?.price * sumDay !== 0 &&
-          <Link to="/order">
-            <Button fullWidth color="primary">Lanjutkan Pembayaran</Button>
-          </Link>
+            <Button fullWidth color="primary" onClick={handlePembayaran}>Lanjutkan Pembayaran</Button>
           }
         </div>
       </div>

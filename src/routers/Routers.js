@@ -17,7 +17,7 @@ const Routers = () => {
       <Route path="/detail-mobil/:id" element={<CarDetails />}></Route>
       <Route path="/login" element={<Login />}></Route>
       <Route path="/register" element={<Register />}></Route>
-      <Route path="/order" element={<Order />}></Route>
+      <Route path="/order:id" element={<Order />}></Route>
 
       <Route path="/admin" element={<AdminLogin />}></Route>
       <Route path="/dashboard" element={<Dashboard />}></Route>
