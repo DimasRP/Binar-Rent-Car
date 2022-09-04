@@ -81,7 +81,6 @@ const Navbar = () => {
             >
               FAQ
             </Link>
-            <Link to="/">FAQ</Link>
             <NavLink to={"/register"}>
               <button className="  bg-lime-green-04 hover:bg-lime-green-05 px-4 py-2 rounded-sm text-white font-bold">
                 Register
