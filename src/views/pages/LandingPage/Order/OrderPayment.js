@@ -163,8 +163,8 @@ const OrderPayment = () => {
           </p>
 
           <div className="mb-4">
-            <p className="mb-2">Upload Bukti Pembayaran</p>
-            <p>
+            <p className="mb-2 text-sm font-bold">Upload Bukti Pembayaran</p>
+            <p className="text-sm">
               Untuk membantu kami lebih cepat melakukan pengecekan. Kamu bisa
               upload bukti bayarmu
             </p>
