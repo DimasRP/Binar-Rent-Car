@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FiCheck, FiDownload, FiImage } from "react-icons/fi";
+import { FiCheck, FiDownload } from "react-icons/fi";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 
 const OrderTicket = () => {

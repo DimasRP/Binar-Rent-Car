@@ -1,8 +1,8 @@
 import { currencyFormat } from "helpers/utils";
+import { useEffect, useState } from "react";
+import { useDropzone } from "react-dropzone";
 import { FiCopy, FiImage, FiTrash } from "react-icons/fi";
 import { Button } from "views/components";
-import { useDropzone } from "react-dropzone";
-import React, { useEffect, useState } from "react";
 
 const OrderPayment = () => {
   const [files, setFiles] = useState([]);
@@ -181,6 +181,7 @@ const OrderPayment = () => {
               <div className="cursor-pointer hover:bg-gray-300 container w-80 h-44 bg-gray-100 mx-auto border-2 border-dashed rounded-md flex justify-center items-center">
                 {files?.map((file, index) => (
                   <img
+                    alt="preview"
                     className="h-full w-full"
                     key={index}
                     src={file.preview}

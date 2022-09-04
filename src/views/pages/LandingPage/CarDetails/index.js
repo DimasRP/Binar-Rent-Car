@@ -1,13 +1,13 @@
 import CarsContext from "context/cars/CarsContext";
 import { ScrollToTop } from "helpers/utils";
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   CarCardDetails,
   CarSearchHeader,
   CarSearchModal,
   Footer,
-  Navbar,
+  Navbar
 } from "views/components";
 
 const CarDetails = () => {
