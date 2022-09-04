@@ -1,14 +1,21 @@
 import { ScrollToTop } from "helpers/utils";
-import React from "react";
-import { Navbar } from "views/components";
+import { Footer, Navbar } from "views/components";
+// import OrderDetail from "./OrderDetail";
+import OrderHeader from "./OrderHeader";
+// import OrderMethod from "./OrderMethod";
+import OrderPayment from "./OrderPayment";
 
 const Order = () => {
   return (
-    <>
+    <main>
       <ScrollToTop />
       <Navbar />
-      <div>Order</div>
-    </>
+      <OrderHeader />
+      {/* <OrderDetail /> */}
+      {/* <OrderMethod /> */}
+      <OrderPayment />
+      <Footer />
+    </main>
   );
 };
 
