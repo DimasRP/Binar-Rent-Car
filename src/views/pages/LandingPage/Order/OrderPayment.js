@@ -1,11 +1,14 @@
 import { currencyFormat } from "helpers/utils";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FiCopy, FiImage, FiTrash } from "react-icons/fi";
 import { Button } from "views/components";
 
 const OrderPayment = () => {
   const [files, setFiles] = useState([]);
+
+  const [confirmTimeout, setConfirmTimeout] = useState(600);
+
   const {
     getRootProps,
     getInputProps,
@@ -27,10 +30,31 @@ const OrderPayment = () => {
     },
   });
 
-  useEffect(() => {
-    // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
+  const filePreview = useCallback(() => {
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
-  }, []);
+  }, [files]);
+
+  useEffect(() => {
+    filePreview();
+  }, [filePreview]);
+
+  useEffect(() => {
+    let timer;
+    if (confirmTimeout > 0) {
+      timer = setTimeout(() => {
+        setConfirmTimeout((v) => (v <= 0 ? v : v - 1));
+      }, 1000);
+    }
+
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [confirmTimeout]);
+
+  const minutes = String(Math.floor(confirmTimeout / 60)).padStart(2, 0);
+  const seconds = String(confirmTimeout % 60).padStart(2, 0);
 
   const handleDeletePhoto = () => {
     setFiles([]);
@@ -38,9 +62,9 @@ const OrderPayment = () => {
 
   return (
     <section className="container mx-auto mb-24 w-full max-w-6xl px-4">
-      <div className="w-full flex flex-col-reverse md:flex-row justify-between gap-8 items-start ">
+      <div className="w-full flex flex-col md:flex-row justify-between gap-8 items-start ">
         <div className="flex flex-col gap-4 w-full md:w-3/5 ">
-          <div className="border p-6 bg-white shadow-sm flex items-center justify-between">
+          <div className="border p-6 bg-white shadow-sm flex flex-col-reverse md:flex-row md:items-center justify-between gap-6">
             <div>
               <h2 className="text-sm font-bold mb-4">
                 Selesaikan Pembayaran Sebelum
@@ -49,7 +73,7 @@ const OrderPayment = () => {
                 Rabu, 12 September 2022 pukul 23.59 WIB
               </p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 self-center">
               <div className="text-white text-lg w-8 h-8 rounded-md bg-danger flex justify-center items-center">
                 23
               </div>
@@ -65,7 +89,7 @@ const OrderPayment = () => {
           </div>
           <div className="border p-6 bg-white shadow-sm">
             <h2 className="text-sm font-bold mb-4">Lakukan Transfer Ke</h2>
-            <section className="flex gap-4 items-baseline mb-8">
+            <section className="flex flex-col md:flex-row gap-4 items-baseline mb-8">
               <label className="px-4 py-2 border rounded-md bg-white flex items-center justify-center text-sm">
                 Mandiri
               </label>
@@ -79,10 +103,10 @@ const OrderPayment = () => {
                 <p className="font-light text-neutral-04 text-sm mb-1">
                   Nomor Rekening
                 </p>
-                <div className="flex items-center justify-between border border-neutral-05 rounded-sm p-2">
-                  <p className="text-sm">71827211011</p>
+                <div className=" overflow-auto flex items-center justify-between border border-neutral-05 rounded-sm p-2">
+                  <p className="text-sm text-ellipsis">71827211011</p>
                   <FiCopy
-                    className="cursor-pointer text-neutral-04"
+                    className="cursor-pointer text-neutral-04 shrink-0"
                     fontSize={18}
                   />
                 </div>
@@ -91,12 +115,12 @@ const OrderPayment = () => {
                 <p className="font-light text-neutral-04 text-sm mb-1">
                   Total Bayar
                 </p>
-                <div className="flex items-center justify-between border border-neutral-05 rounded-sm p-2">
-                  <p className="text-sm font-bold">
+                <div className=" overflow-auto flex items-center justify-between border border-neutral-05 rounded-sm p-2">
+                  <p className="text-sm font-bold text-ellipsis">
                     {currencyFormat(500000 * 7)}
                   </p>
                   <FiCopy
-                    className="cursor-pointer text-neutral-04"
+                    className="cursor-pointer text-neutral-04 shrink-0"
                     fontSize={18}
                   />
                 </div>
@@ -105,17 +129,17 @@ const OrderPayment = () => {
           </div>
           <div className="border p-6 bg-white shadow-sm">
             <h2 className="text-sm font-bold mb-4">Instruksi Pembayaran</h2>
-            <div className="flex w-full mb-4">
-              <button className="text-sm pb-4 border-b-2 w-36 text-center  border-b-lime-green-04 font-bold">
+            <div className="flex w-full mb-4 overflow-auto">
+              <button className="shrink-0 text-sm pb-4 border-b-2 w-36 text-center  border-b-lime-green-04 font-bold">
                 ATM BCA
               </button>
-              <button className="text-sm pb-4 border-b-2 w-36 text-center">
+              <button className="shrink-0 text-sm pb-4 border-b-2 w-36 text-center">
                 M-BCA
               </button>
-              <button className="text-sm pb-4 border-b-2 w-36 text-center">
+              <button className="shrink-0 text-sm pb-4 border-b-2 w-36 text-center">
                 BCA Klik
               </button>
-              <button className="text-sm pb-4 border-b-2 w-36 text-center">
+              <button className="shrink-0 text-sm pb-4 border-b-2 w-36 text-center">
                 Internet Banking
               </button>
             </div>
@@ -144,21 +168,22 @@ const OrderPayment = () => {
           </div>
         </div>
         <div className="flex flex-col gap-4 w-full md:w-2/5 border p-6 bg-white shadow-sm">
-          <div className="flex mb-4 gap-4 justify-between items-stretch">
+          <div className="flex flex-col md:flex-row mb-4 gap-4 justify-between items-stretch">
             <h2 className="text-sm font-bold mb-2">Konfirmasi Pembayaran</h2>
-            <div className="flex items-center gap-2">
-              <div className="text-white text-lg w-8 h-8 rounded-md bg-danger flex justify-center items-center">
-                00
+            <div className="flex self-center items-center gap-2">
+              <div className="text-white text-lg w-8 h-8 rounded-md bg-danger flex justify-center items-center ">
+                {minutes || "10"}
               </div>
               <span className="font-bold text-sm">:</span>
-              <div className="text-white text-lg w-8 h-8 rounded-md bg-danger flex justify-center items-center">
-                59
+              <div className="text-white text-lg w-8 h-8 rounded-md bg-danger flex justify-center items-center ">
+                {seconds || "00"}
               </div>
             </div>
           </div>
           <p className="text-sm mb-6">
             Terima kasih telah melakukan konfirmasi pembayaran. Pembayaranmu
-            akan segera kami cek tunggu kurang lebih 10 menit untuk mendapatkan
+            akan segera kami cek tunggu kurang lebih{" "}
+            <span className="font-semibold">10 menit</span> untuk mendapatkan
             konfirmasi.
           </p>
 
@@ -171,14 +196,14 @@ const OrderPayment = () => {
           </div>
           <div {...getRootProps({ className: "dropzone" })}>
             {files.length === 0 ? (
-              <div className="cursor-pointer hover:bg-gray-300 container mb-6 w-80 h-44 bg-gray-100 mx-auto border-2 border-dashed rounded-md flex justify-center items-center">
+              <div className="cursor-pointer hover:bg-gray-300 container mb-6 w-full sm:w-80 h-44 bg-gray-100 mx-auto border-2 border-dashed rounded-md flex justify-center items-center">
                 <input {...getInputProps()} />
                 {isDragAccept && <p>All files will be accepted</p>}
                 {isDragReject && <p>Some files will be rejected</p>}
                 {!isDragActive && <FiImage fontSize={24} />}
               </div>
             ) : (
-              <div className="cursor-pointer hover:bg-gray-300 container w-80 h-44 bg-gray-100 mx-auto border-2 border-dashed rounded-md flex justify-center items-center">
+              <div className="cursor-pointer hover:bg-gray-300 container w-full sm:w-80 h-44 bg-gray-100 mx-auto border-2 border-dashed rounded-md flex justify-center items-center">
                 {files?.map((file, index) => (
                   <img
                     alt="preview"

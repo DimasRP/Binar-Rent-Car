@@ -1,4 +1,5 @@
 import { currencyFormat } from "helpers/utils";
+import { useState } from "react";
 import { FiCheck, FiUsers } from "react-icons/fi";
 import { Button } from "views/components";
 
@@ -9,13 +10,16 @@ const bankList = [
 ];
 
 const OrderMethod = () => {
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+
   return (
     <section className="container mx-auto mb-24 w-full max-w-6xl px-4">
-      <div className="w-full flex flex-col-reverse md:flex-row justify-between gap-8 items-start ">
+      <div className="w-full flex flex-col md:flex-row justify-between gap-8 items-start ">
         <div className="flex flex-col gap-4 w-full md:w-3/5 border p-6 bg-white shadow-sm">
           <h2 className="text-sm font-bold">Pilih Bank Transfer</h2>
           {bankList.map((item) => (
             <button
+              onClick={() => setSelectedPaymentMethod(item)}
               key={item.id}
               className=" pb-4 pr-2 border-b flex items-center hover:bg-lime-green-01"
             >
@@ -23,7 +27,7 @@ const OrderMethod = () => {
                 {item.name}
               </label>
               <p className="ml-4 text-sm">{item.method}</p>
-              {item.id === 1 && (
+              {selectedPaymentMethod?.id === item?.id && (
                 <span className="ml-auto text-lime-green-04">
                   <FiCheck fontSize={24} />
                 </span>
@@ -86,7 +90,7 @@ const OrderMethod = () => {
             <h2 className="text-sm font-bold">Total</h2>
             <p className="text-sm font-bold">{currencyFormat(500000 * 7)}</p>
           </div>
-          <Button fullWidth color="primary">
+          <Button disabled={!selectedPaymentMethod} fullWidth color="primary">
             Bayar
           </Button>
         </div>

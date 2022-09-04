@@ -64,11 +64,11 @@ const OrderTicket = () => {
             </div> */}
           </div>
           {numPages > 1 && (
-            <div className="flex gap-4 justify-between items-center mt-4">
+            <div className="flex flex-col md:flex-row gap-4 justify-between items-center mt-4 flex-wrap">
               <p className="text-sm font-semibold">
                 Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
               </p>
-              <div className="btn-group">
+              <div className="flex shrink-0">
                 <button
                   type="button"
                   disabled={pageNumber <= 1}

@@ -1,9 +1,9 @@
 import { ScrollToTop } from "helpers/utils";
 import { Footer, Navbar } from "views/components";
-// import OrderDetail from "./OrderDetail";
+import OrderDetail from "./OrderDetail";
 import OrderHeader from "./OrderHeader";
-import OrderTicket from "./OrderTicket";
-// import OrderMethod from "./OrderMethod";
+// import OrderTicket from "./OrderTicket";
+import OrderMethod from "./OrderMethod";
 // import OrderPayment from "./OrderPayment";
 
 const Order = () => {
@@ -12,10 +12,10 @@ const Order = () => {
       <ScrollToTop />
       <Navbar />
       <OrderHeader />
-      {/* <OrderDetail /> */}
-      {/* <OrderMethod /> */}
+      <OrderDetail />
+      <OrderMethod />
       {/* <OrderPayment /> */}
-      <OrderTicket />
+      {/* <OrderTicket /> */}
       <Footer />
     </main>
   );
