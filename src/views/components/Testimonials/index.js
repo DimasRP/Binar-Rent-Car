@@ -11,10 +11,7 @@ const Testimonials = () => {
   const [sliderRef, setSliderRef] = useState(null);
 
   const settings = {
-    className: "center",
     dots: false,
-    centerMode: true,
-    infinite: true,
     slidesToShow: 1,
     speed: 500,
     centerPadding: "0px",

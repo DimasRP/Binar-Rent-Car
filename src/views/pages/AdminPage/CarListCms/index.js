@@ -1,9 +1,9 @@
 import React from 'react'
 
-const CarList = () => {
+const CarListCms = () => {
   return (
     <div>CarList</div>
   )
 }
 
-export default CarList
+export default CarListCms
