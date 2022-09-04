@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
-import { useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-scroll";
 import Drawer from "../Drawer";
 import Logo from "../Logo";
@@ -81,6 +81,12 @@ const Navbar = () => {
             >
               FAQ
             </Link>
+            <Link to="/">FAQ</Link>
+            <NavLink to={"/register"}>
+              <button className="  bg-lime-green-04 hover:bg-lime-green-05 px-4 py-2 rounded-sm text-white font-bold">
+                Register
+              </button>
+            </NavLink>
           </div>
           <button onClick={() => setIsOpen(true)} className="md:hidden w-6 h-6">
             <FiMenu fontSize={24} className="text-black hover:text-gray-600" />
@@ -157,6 +163,11 @@ const Navbar = () => {
               >
                 FAQ
               </Link>
+              <NavLink to={"/register"}>
+                <button className="  bg-lime-green-04 hover:bg-lime-green-05 px-4 py-2 rounded-sm text-white font-bold">
+                  Register
+                </button>
+              </NavLink>
             </div>
           </nav>
         </aside>
