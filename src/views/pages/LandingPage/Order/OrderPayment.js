@@ -197,7 +197,7 @@ const OrderPayment = () => {
           <div {...getRootProps({ className: "dropzone" })}>
             {files.length === 0 ? (
               <div className="cursor-pointer hover:bg-gray-300 container mb-6 w-full sm:w-80 h-44 bg-gray-100 mx-auto border-2 border-dashed rounded-md flex justify-center items-center">
-                <input {...getInputProps()} />
+                <input {...getInputProps()} multiple={false} />
                 {isDragAccept && <p>All files will be accepted</p>}
                 {isDragReject && <p>Some files will be rejected</p>}
                 {!isDragActive && <FiImage fontSize={24} />}
@@ -207,7 +207,7 @@ const OrderPayment = () => {
                 {files?.map((file, index) => (
                   <img
                     alt="preview"
-                    className="h-full w-full"
+                    className="h-full"
                     key={index}
                     src={file.preview}
                     // Revoke data uri after image is loaded

@@ -9,6 +9,7 @@ const OrderTicket = () => {
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
     setPageNumber(1);
+    return;
   }
 
   function changePage(offset) {
@@ -47,13 +48,13 @@ const OrderTicket = () => {
           </div>
           <div className="w-full h-48 bg-gray-100 mx-auto border-2 border-dashed rounded-md flex justify-center items-center">
             <Document
-              className={" w-full h-full"}
-              file={"http://localhost:3000/assets/files/sample.pdf"}
+              className={" w-full h-full flex items-center justify-center"}
+              file={`${window.origin}/assets/files/sample.pdf`}
               onLoadSuccess={onDocumentLoadSuccess}
               options={{ workerSrc: "/pdf.worker.js" }}
             >
               <Page
-                className={"w-full h-full overflow-y-auto flex justify-center"}
+                className={"w-full h-full overflow-y-auto sm:flex sm:justify-center"}
                 pageNumber={pageNumber}
               />
             </Document>

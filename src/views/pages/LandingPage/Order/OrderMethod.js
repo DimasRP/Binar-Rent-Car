@@ -56,7 +56,7 @@ const OrderMethod = () => {
             <div className="collapse-content p-0 -mt-2">
               <div className="mb-6">
                 <h2 className="text-sm font-bold mb-2">Harga</h2>
-                <div className="flex items-center justify-between text-sm leading-6">
+                <div className="flex items-stretch justify-between text-sm leading-6">
                   &bull; Sewa Mobil {currencyFormat(500000)} &times; 7 hari
                   <span>{currencyFormat(500000 * 7)}</span>
                 </div>

@@ -16,7 +16,7 @@ const OrderHeader = () => {
               <p className="text-sm">Order ID: 86754321</p>
             </div>
           </div>
-          <div className="overflow-auto flex justify-center items-center gap-3 w-full md:w-auto">
+          <div className="overflow-auto flex items-center gap-3 w-full md:w-auto sm:justify-center">
             <div className="shrink-0  flex items-center gap-2">
               <div className=" w-6 h-6 text-sm flex items-center justify-center p-1 border border-dark-blue-04 bg-dark-blue-04 text-white rounded-full ">
                 1
