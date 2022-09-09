@@ -13,6 +13,9 @@ export { default as LoadingCard } from "./LoadingCard";
 export { default as Logo } from "./Logo";
 export { default as Navbar } from "./Navbar";
 export { default as OurServices } from "./OurServices";
+export { default as Spinner } from "./Spinner";
+export { default as SplashScreen } from "./SplashScreen";
 export { default as Testimonials } from "./Testimonials";
 export { default as WhyUs } from "./WhyUs";
 
+export { default as RequiredRoute } from "./HOC/RequiredRoute";

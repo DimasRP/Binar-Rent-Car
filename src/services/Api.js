@@ -1,5 +1,10 @@
 import axios from "axios";
 
+const token = localStorage.getItem("token");
+
+axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+axios.defaults.headers.common.access_token = token;
+
 const Api = axios.create({
   baseURL: "https://bootcamp-rent-car.herokuapp.com",
   headers: {
@@ -12,32 +17,4 @@ const Api = axios.create({
   crossdomain: true,
 });
 
-function ApiGetRequest(url, data) {
-  return Api.get(url, {
-    params: data,
-  })
-    .then((response) => response)
-    .then((responseJson) => {
-      return responseJson;
-    })
-    .catch((error) => {
-      return {
-        error: (error.response && error.response.data.message) || error,
-      };
-    });
-}
-
-function ApiPostRequest(url, data) {
-  return Api.post(url, data)
-    .then((response) => response)
-    .then((responseJson) => {
-      return responseJson;
-    })
-    .catch((error) => {
-      return {
-        error: (error.response && error.response.data.message) || error,
-      };
-    });
-}
-
-export { ApiGetRequest, ApiPostRequest };
+export default Api;

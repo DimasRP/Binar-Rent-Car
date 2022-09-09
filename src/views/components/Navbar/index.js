@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { AuthContext } from "context/auth/AuthContext";
+import { useContext, useEffect, useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-scroll";
@@ -8,6 +9,7 @@ import Logo from "../Logo";
 const Navbar = () => {
   const url = useLocation();
   const navigate = useNavigate();
+  const { isLogin, onLogout } = useContext(AuthContext);
 
   const [isOpen, setIsOpen] = useState(false);
   const { pathname } = url;
@@ -25,6 +27,10 @@ const Navbar = () => {
 
     window.addEventListener("resize", closeSidebar);
   }, []);
+
+  const handleLogout = () => {
+    onLogout();
+  };
 
   return (
     <>
@@ -81,11 +87,20 @@ const Navbar = () => {
             >
               FAQ
             </Link>
-            <NavLink to={"/register"}>
-              <button className="  bg-lime-green-04 hover:bg-lime-green-05 px-4 py-2 rounded-sm text-white font-bold">
-                Register
+            {isLogin ? (
+              <button
+                onClick={handleLogout}
+                className="  bg-lime-green-04 hover:bg-lime-green-05 px-4 py-2 rounded-sm text-white font-bold"
+              >
+                Logout
               </button>
-            </NavLink>
+            ) : (
+              <NavLink to={"/register"}>
+                <button className="  bg-lime-green-04 hover:bg-lime-green-05 px-4 py-2 rounded-sm text-white font-bold">
+                  Register
+                </button>
+              </NavLink>
+            )}
           </div>
           <button onClick={() => setIsOpen(true)} className="md:hidden w-6 h-6">
             <FiMenu fontSize={24} className="text-black hover:text-gray-600" />
@@ -162,11 +177,20 @@ const Navbar = () => {
               >
                 FAQ
               </Link>
-              <NavLink to={"/register"}>
-                <button className="  bg-lime-green-04 hover:bg-lime-green-05 px-4 py-2 rounded-sm text-white font-bold">
-                  Register
+              {isLogin ? (
+                <button
+                  onClick={handleLogout}
+                  className="  bg-lime-green-04 hover:bg-lime-green-05 px-4 py-2 rounded-sm text-white font-bold"
+                >
+                  Logout
                 </button>
-              </NavLink>
+              ) : (
+                <NavLink to={"/register"}>
+                  <button className="  bg-lime-green-04 hover:bg-lime-green-05 px-4 py-2 rounded-sm text-white font-bold">
+                    Register
+                  </button>
+                </NavLink>
+              )}
             </div>
           </nav>
         </aside>

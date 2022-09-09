@@ -1,5 +1,5 @@
 import { createContext, useReducer } from "react";
-import { ApiGetRequest, ApiPostRequest } from "services/Api";
+import Api from "services/Api";
 import { SET_CARS } from "../constants";
 import carsReducer from "./CarsReducer";
 import { carsState } from "./CarsState";
@@ -25,7 +25,7 @@ export const CarsProvider = ({ children }) => {
     setLoading();
 
     try {
-      const response = await ApiGetRequest(`/admin/car`);
+      const response = await Api.get(`/admin/car`);
 
       let carList = response?.data || [];
 
@@ -86,7 +86,7 @@ export const CarsProvider = ({ children }) => {
     setLoading();
 
     try {
-      const response = await ApiPostRequest(`/admin/car`, data);
+      const response = await Api.post(`/admin/car`, data);
       if (response?.error) {
         dispatch({
           type: SET_CARS,
@@ -123,7 +123,7 @@ export const CarsProvider = ({ children }) => {
     setLoading();
 
     try {
-      const response = await ApiGetRequest(`/admin/car/${id}`);
+      const response = await Api.get(`/admin/car/${id}`);
       if (response?.error) {
         dispatch({
           type: SET_CARS,

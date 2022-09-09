@@ -1,5 +1,10 @@
 import { FiAward, FiClock, FiTag, FiThumbsUp } from "react-icons/fi";
 
+const roles = {
+  admin: "Admin",
+  customer: "Customer",
+};
+
 const ourServicesData = [
   {
     title: "Sewa Mobil dengan Supir di Bali 12 Jam",
@@ -202,5 +207,5 @@ export {
   carCategoryOptions,
   carPriceOptions,
   carStatusOptions,
+  roles,
 };
-

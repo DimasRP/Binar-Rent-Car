@@ -14,11 +14,11 @@ const App = () => {
   }, []);
 
   return (
-    <ContextProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <ContextProvider>
         <Routers />
-      </BrowserRouter>
-    </ContextProvider>
+      </ContextProvider>
+    </BrowserRouter>
   );
 };
 
