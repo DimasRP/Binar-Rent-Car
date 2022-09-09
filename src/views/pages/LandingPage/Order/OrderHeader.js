@@ -1,7 +1,9 @@
 import React from "react";
 import { FiArrowLeft } from "react-icons/fi";
 import { Link } from "react-router-dom";
-const OrderHeader = () => {
+import PropTypes from "prop-types";
+
+const OrderHeader = ({ activeStep = "",  }) => {
   return (
     <header className="bg-dark-blue-00 relative flex flex-col md:block md:h-52 mb-10">
       <div className="container mx-auto relative md:py-10 px-4 w-full max-w-6xl mb-8">
@@ -13,26 +15,42 @@ const OrderHeader = () => {
 
             <div className="flex flex-col gap-2">
               <p className="font-bold text-sm">Pembayaran</p>
-              <p className="text-sm">Order ID: 86754321</p>
+              {activeStep !== "method" && (
+                <p className="text-sm">Order ID: 86754321</p>
+              )}
             </div>
           </div>
           <div className="overflow-auto flex items-center gap-3 w-full md:w-auto sm:justify-center">
             <div className="shrink-0  flex items-center gap-2">
-              <div className=" w-6 h-6 text-sm flex items-center justify-center p-1 border border-dark-blue-04 bg-dark-blue-04 text-white rounded-full ">
+              <div
+                className=" w-6 h-6 text-sm flex items-center justify-center p-1 border border-dark-blue-04 bg-dark-blue-04 hover:bg-dark-blue-05 text-white rounded-full "
+              >
                 1
               </div>
               <p className="text-sm ">Pilih Metode</p>
             </div>
             <div className="shrink-0 w-8 border-b-2 border-dark-blue-04 " />
             <div className="shrink-0 flex items-center gap-2">
-              <div className="w-6 h-6 text-sm flex items-center justify-center p-1 border border-dark-blue-04 bg-white rounded-full ">
+              <div
+                className={`w-6 h-6 text-sm flex items-center justify-center p-1 border border-dark-blue-04 ${
+                  activeStep === "payment" || activeStep === "ticket"
+                    ? `bg-dark-blue-04 hover:bg-dark-blue-05 text-white`
+                    : `bg-white hover:bg-dark-blue-00`
+                } rounded-full`}
+              >
                 2
               </div>
               <p className="text-sm">Bayar</p>
             </div>
             <div className="shrink-0 w-8 border-b-2 border-dark-blue-04 " />
             <div className="shrink-0 flex items-center gap-2">
-              <div className="w-6 h-6 text-sm flex items-center justify-center p-1 border border-dark-blue-04 bg-white rounded-full ">
+              <div
+                className={`w-6 h-6 text-sm flex items-center justify-center p-1 border border-dark-blue-04 ${
+                  activeStep === "ticket"
+                    ? `bg-dark-blue-04 text-white`
+                    : `bg-white hover:bg-dark-blue-00`
+                } rounded-full`}
+              >
                 3
               </div>
               <p className="text-sm">Tiket</p>
@@ -42,6 +60,14 @@ const OrderHeader = () => {
       </div>
     </header>
   );
+};
+
+OrderHeader.defaultProps = {
+  activeStep: "method",
+};
+
+OrderHeader.propTypes = {
+  activeStep: PropTypes.string.isRequired,
 };
 
 export default OrderHeader;

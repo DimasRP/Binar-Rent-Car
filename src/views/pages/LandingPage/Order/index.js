@@ -1,21 +1,30 @@
-import { ScrollToTop } from "helpers/utils";
+import { useState } from "react";
 import { Footer, Navbar } from "views/components";
 import OrderDetail from "./OrderDetail";
 import OrderHeader from "./OrderHeader";
-// import OrderTicket from "./OrderTicket";
 import OrderMethod from "./OrderMethod";
-// import OrderPayment from "./OrderPayment";
+import OrderPayment from "./OrderPayment";
+import OrderTicket from "./OrderTicket";
 
 const Order = () => {
+  const [activeStep, setActiveStep] = useState("method");
+
+  const handleChangeActiveStep = (step = "") => {
+    setActiveStep(step);
+  };
+
   return (
     <main>
-      <ScrollToTop />
       <Navbar />
-      <OrderHeader />
-      <OrderDetail />
-      <OrderMethod />
-      {/* <OrderPayment /> */}
-      {/* <OrderTicket /> */}
+      <OrderHeader activeStep={activeStep} />
+      {activeStep === "method" && <OrderDetail />}
+      {activeStep === "method" && (
+        <OrderMethod handleChangeActiveStep={handleChangeActiveStep} />
+      )}
+      {activeStep === "payment" && (
+        <OrderPayment handleChangeActiveStep={handleChangeActiveStep} />
+      )}
+      {activeStep === "ticket" && <OrderTicket />}
       <Footer />
     </main>
   );
