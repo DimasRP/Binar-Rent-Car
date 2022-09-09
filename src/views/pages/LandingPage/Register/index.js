@@ -1,99 +1,178 @@
-import React, {useState}from 'react'
-import axios from 'axios';
+import axios from "axios";
+import { AuthContext } from "context/auth/AuthContext";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import { Spinner } from "views/components";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const { isLogin } = useContext(AuthContext);
 
+  const [registerForm, setRegisterForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [response, setResponse] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [loading, setSpinner] = useState(false);
+  const { email, password, name, confirmPassword } = registerForm;
 
-  const [email,setEmail]=useState("");
-  const[password,setPassword]=useState("")
-  const[res,setRes]=useState("")
-  const[confirmPassword, setConfirmPassword] = useState("")
-  // console.log("berhasil");
+  const nameRef = useRef(null);
 
+  const handleInputChange = (e) => {
+    setRegisterForm((prevState) => ({
+      ...prevState,
+      [e.target.id]: e.target.value,
+    }));
+  };
 
-const handleEmail = (e) =>{
-  setEmail(e.target.value)
-  console.log(e.target.value)
-}
-const handlePassword= (e)=>{
-  setPassword(e.target.value);
-}
-const handleConfirmPassword = (e) => {
-   
-    
-    setConfirmPassword(e.target.value)
-  
-}
-const handleRegister = (e) => {
- console.log(email,password)
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setResponse("");
+    setIsError(false);
+    setSpinner(true);
+    const data = {
+      name,
+      email,
+      password,
+    };
+    try {
+      const response = await axios.post("https://reqres.in/api/register", data);
+      if (response?.data) {
+        setRegisterForm({
+          name: "",
+          email: "",
+          password: "",
+        });
+        nameRef.current.focus();
+      }
+      setSpinner(false);
+      setResponse("Akun berhasil terdaftar, silakan login.");
+    } catch (error) {
+      setResponse(error?.response?.data?.error);
+      setSpinner(false);
+      setIsError(true);
+    }
+  };
 
-      const  payload = {
-      email : email,
-      password : password,
-      
+  const redirect = useCallback(
+    () => navigate("/", { replace: true }),
+    [navigate]
+  );
 
-      }   
-      
-      axios 
-      .post("https://bootcamp-rent-car.herokuapp.com/customer/auth/register",payload)
-      .then(res => setRes(res.data.token))
-      .catch(err => console.log(err))
-}
+  useEffect(() => {
+    const checkIfLogin = () => {
+      if (!isLogin) {
+        nameRef.current.focus();
+      } else {
+        redirect();
+      }
+    };
+    checkIfLogin();
+  }, [isLogin, redirect]);
 
+  if (isLogin) {
+    return <Navigate to={"/"} replace />;
+  }
 
   return (
-    <div className="  flex min-h-screen ">
-      <div className='bg-white w-2/5 md:w-2/5 h-full flex items-center justify-center'>
-    <div className='w-full p-14'>
-    
-    <h1 className='font-bold text-2xl my-8'>Sign Up</h1>
-    <form>
-      
-      <div className='flex flex-col mb-4' >
-        <label className='mb-2'>Name*</label>
-        <input className='border border-gray-300 pl-4 py-2 rounded-md focus:outline-blue-600' type="text" placeholder='Full Name'/>
-      </div>
-      <div className='flex flex-col mb-4' >
-        <label className='mb-2'>Email*</label>
-        <input className='border border-gray-300 pl-4 py-2 rounded-md focus:outline-blue-600' type="email" placeholder='Contoh: johndee@gmail.com' onChange={(e)=> handleEmail(e)}/>
-      </div>
-      <div className='flex flex-col mb-8'>
-        <label className='mb-2'>Create Password</label>
-        <input className='border border-gray-300 pl-4 py-2 rounded-md  focus:outline-blue-600' type="password" placeholder='6+ Karakter' onChange={(e)=> handlePassword(e)}/>
-      </div>
-      <div className='flex flex-col mb-8'>
-        <label className='mb-2'>Confirm Password</label>
-        <input className='border border-gray-300 pl-4 py-2 rounded-md  focus:outline-blue-600' type="password" placeholder='6+ Karakter' onChange={(e)=> handleConfirmPassword(e)} />
-        {
-          password !== confirmPassword && <p>Password not match</p>
-        }
-      </div>
-      
-      <button onClick={handleRegister} className='bg-blue-700 text-white w-full py-2 rounded-md hover:bg-blue-900 disabled:bg-gray-500 disabled:hover:bg-gray-700 ' disabled={password !== confirmPassword}>Sign Up</button>
-      {
-       !!res.length && (<h1>Anda sudah terdaftar</h1>) 
-      }
-    </form>
-    <div className=' text-black w-full py-4 text-bold'>
-    <h6>Already have an account?</h6>
-    </div>
-    </div>
-    
-    </div>
-      <div className="relative w-4/6 hidden sm:block"
-      
-      >
+    <main className="min-h-screen flex items-stretch">
+      <section className="md:flex-1 px-4 py-6 md:px-16 md:py-16 w-full md:w-3/6 flex md:justify-center md:items-center ">
+        <div className="flex flex-col md:justify-center gap-8 w-full md:max-w-sm">
+          <div className="bg-dark-blue-01 w-24 h-8 rounded-sm" />
+          <div>
+            <h1 className="font-bold text-2xl leading-9 ">Sign Up</h1>
+          </div>
+          <form onSubmit={handleRegister} className="flex flex-col gap-8">
+            <div className="flex flex-col gap-2">
+              <label className="text-sm">Name*</label>
+              <input
+                ref={nameRef}
+                onChange={handleInputChange}
+                className=" px-4 py-2 border rounded-md text-sm  "
+                type={"text"}
+                name="name"
+                id="name"
+                placeholder="Nama lengkap"
+                value={name}
+                disabled={loading}
+                required
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm">Email*</label>
+              <input
+                onChange={handleInputChange}
+                className=" px-4 py-2 border rounded-md text-sm  "
+                type={"email"}
+                name="email"
+                id="email"
+                placeholder="Contoh: john.doe@gmail.com"
+                value={email}
+                disabled={loading}
+                required
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm">Create Password*</label>
+              <input
+                onChange={handleInputChange}
+                className=" px-4 py-2 border rounded-md text-sm  "
+                type={"password"}
+                name="password"
+                id="password"
+                placeholder="6+ karakter"
+                value={password}
+                disabled={loading}
+                required
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm">Confirm Password*</label>
+              <input
+                onChange={handleInputChange}
+                className=" px-4 py-2 border rounded-md text-sm  "
+                type={"password"}
+                name="confirmPassword"
+                id="confirmPassword"
+                placeholder="Konfirmasi password"
+                value={confirmPassword}
+                disabled={loading}
+                required
+              />
+            </div>
+            <button
+              disabled={loading}
+              className="bg-dark-blue-04 text-white rounded-md p-2 hover:bg-dark-blue-05 flex items-center disabled:hover:bg-gray-100 disabled:bg-gray-100 justify-center"
+              type="submit"
+            >
+              {loading ? <Spinner /> : "Sign Up"}
+            </button>
+          </form>
+          {response && (
+            <p
+              className={`font-semibold text-center ${
+                isError ? "text-red-500" : "text-green-600"
+              }`}
+            >
+              {response}
+            </p>
+          )}
+        </div>
+      </section>
+
+      <section className=" flex-1 bg-dark-blue-04 hidden md:block relative">
         <div
-          className=" absolute w-full h-full bg-cover"
           style={{
-            backgroundImage: `url(${window.location.origin}/assets/images/signupcover.png)`,
+            backgroundImage: `url("${window.location.origin}/assets/images/signupcover.png")`,
           }}
-        ></div>
-      </div>
-    
-    
-  </div>
-  )
-}
+          className="bg-contain h-full w-full bg-no-repeat bg-right"
+        />
+      </section>
+    </main>
+  );
+};
 
 export default Register;
