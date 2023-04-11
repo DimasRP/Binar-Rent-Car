@@ -17,7 +17,6 @@ import {
   CarListCms,
 } from "views/pages";
 
-
 const Routers = () => {
   return (
     <Routes>
